@@ -1,4 +1,6 @@
 # Miscellaneous
+.metadata
+*.iml
 *.class
 *.lock
 *.log
@@ -6,6 +8,7 @@
 *.swp
 .buildlog/
 .history
+.idea/
 
 
 
