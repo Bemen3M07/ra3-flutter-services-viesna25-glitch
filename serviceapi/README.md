@@ -1,153 +1,183 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/urLBeyZM)
-# flutter-empty-2026
+# Ejercicios de Flutter con APIs
 
-Plantilla de flux de treball per recrear una estructura neta de projecte Flutter només amb:
+Ejercicios:
 
-- Plataforma Web
-- Plataforma Android
+1. **Accés a un servei**
+2. **Integrar vista i model**
+3. **Acudits**
+4. **TMB**
 
-Aquest README està pensat perquè puguis reiniciar el repositori a un estat mínim i regenerar els fitxers de plataforma necessaris de manera reproduïble.
+---
 
-Aquest document s'ha fet amb l'ajuda de Copilot
+# 1. Accés a un servei
 
-## 1) Prerequisits
+## Descripción
 
-- Flutter SDK instal·lat i disponible al PATH
-- Comprova la instal·lació de Flutter:
+Prueba de acceso a un servicio de una API para una aplicación que nos permite ver modelos de coches.
 
-```bash
-flutter doctor
+## API utilizada
+
+https://car-data.p.rapidapi.com
+
+## Se ha implementado
+
+- model > rentcar.dart
+- service > car_http_service.dart
+- test > exercici1.dart
+
+## Funcionamiento
+
+1. El usuario no tiene frontend, por lo que simplemente corre el test.
+2. La aplicación realiza una petición HTTP a la API.
+3. Recibe respuesta en un JSON.
+
+# 2. Integrar vista i model
+
+## Descripción
+
+Continuación de la API de coches, en este caso se integra la vista correspondiente para poder hacer uso de la API.
+
+## API utilizada
+
+https://car-data.p.rapidapi.com
+
+## Se ha implementado
+
+- view > exercici_2.dart
+
+## Funcionamiento
+
+1. El usuario abre la aplicación.
+2. Pulsa el botón de actualizar.
+3. La aplicación realiza una petición HTTP a la API.
+4. Se obtiene la lista de vehículos en pantalla.
+
+# 3. Acudits
+
+## Descripción
+
+Aplicación que muestra un chiste al azar cada vez que le das al botón.
+
+## API utilizada
+
+https://api.sampleapis.com/jokes/goodJokes
+
+Ejemplo de respuesta:
+
+```json
+{
+"id": 1,
+"setup": "Why did the chicken cross the road?",
+"punchline": "To get to the other side."
+}
 ```
 
-## 2) Comença des d’un estat net del repositori
+## Funcionamiento
 
-Si vols descartar els canvis locals i tornar a l’últim estat confirmat al repositori:
+1. El usuario abre la aplicación.
+2. Pulsa el botón de actualizar.
+3. La aplicación realiza una petición HTTP a la API.
+4. Se obtiene un chiste aleatorio.
+5. El chiste se muestra en pantalla.
 
-```bash
-git reset --hard
-git clean -fd
+---
+
+# 4. TMB
+
+## Descripción
+
+Esta aplicación permite consultar los autobuses que pasarán por una parada de bus utilizando la API oficial de Transport Metropolitans de Barcelona (TMB).
+
+El usuario introduce el código de una parada y la aplicación muestra las líneas y destinos de los próximos autobuses.
+
+## Registro en la API
+
+Para usar la API es necesario registrarse en:
+
+https://developer.tmb.cat
+
+Después del registro se generan:
+
+* `APP_ID`
+* `APP_KEY`
+
+Estos valores se utilizan para autenticar las peticiones.
+
+## API utilizada
+
+Documentación oficial:
+
+https://developer.tmb.cat/api-docs/v1/ibus
+
+Endpoint utilizado:
+
+```
+GET /v1/itransit/bus/parades/{stopCode}
 ```
 
-## 3) Genera només l’estructura de plataforma Web + Android
+Ejemplo:
 
-Des de l’arrel del projecte:
-
-```bash
-flutter create --platforms=web,android .
+```
+https://api.tmb.cat/v1/itransit/bus/parades/108?app_id=APP_ID&app_key=APP_KEY
 ```
 
-Què fa aquesta comanda:
+## Funcionamiento
 
-- Regenera els fitxers d’esquelet de Flutter que faltin
-- Crea/actualitza les carpetes de plataforma `web/` i `android/`
-- Manté el codi Dart existent de l’app sempre que sigui possible
+1. El usuario introduce un código de parada.
+2. La aplicación consulta la API de TMB.
+3. Se reciben los datos en formato JSON.
+4. Se muestran las líneas de autobús y destinos.
 
-Opcions disponibles per `--platforms`:
+---
 
-- `android`
-- `ios`
-- `web`
-- `windows`
-- `macos`
-- `linux`
+# Arquitectura del proyecto
 
-Exemple amb totes les plataformes:
+Las aplicaciones siguen el patrón **MVC (Model - View - Controller)**.
 
-```bash
-flutter create --platforms=android,ios,web,windows,macos,linux .
+```
+lib/
+ ├── models/
+ ├── controllers/
+ ├── services/
+ └── views/
 ```
 
-Pots combinar només les que necessitis, separades per comes.
+**Model**
 
-## 4) Comandes de compilació
+Representa los datos (Joke, Bus, etc.).
 
-Compila només l’app web:
+**Controller**
 
-```bash
-flutter build web
+Gestiona la lógica de la aplicación y las peticiones a la API.
+
+**Service**
+
+Realiza las llamadas HTTP a las APIs.
+
+**View**
+
+Contiene la interfaz de usuario.
+
+---
+
+# Dependencias utilizadas
+
+En `pubspec.yaml`:
+
+```
+http
+provider
 ```
 
-Compila l’APK d’Android:
+* **http**: para realizar peticiones a APIs REST.
+* **provider**: para gestionar el estado de la aplicación.
 
-```bash
-flutter build apk
-```
+---
 
-Android App Bundle opcional (Play Store):
+# Tecnologías utilizadas
 
-```bash
-flutter build appbundle
-```
-
-## 5) Comandes d’execució (segons dispositiu)
-
-Fes `flutter run -d <dispositiu>` per executar l’aplicació en un dispositiu concret.
-
-Opcionalment, pots afegir `&` al final de la comanda per executar-la en segon pla.
-
-- `-d` és el mateix que `--device-id`.
-- `&` executa la comanda en segon pla (el `run` bloqueja la terminal si no l’afegeixes).
-- Serveix per indicar a Flutter en quin dispositiu/target vols executar l’app.
-- Exemples: `chrome`, `android`, `ios`, `windows`, `macos`, `linux` (segons les plataformes que tinguis disponibles al teu entorn).
-
-### Chrome
-
-Executa al navegador Chrome:
-
-```bash
-flutter run -d chrome
-```
-
-L’opció `chrome` es pot executar directament per desenvolupament i proves.
-Si vols desplegar la versió web en un servidor, has de generar el build amb `flutter build web` i publicar el contingut de `build/web`.
-
-### Android
-
-Arrenca un emulador Android per línia de comandes (CLI):
-
-```bash
-flutter emulators # Per veure tots els emuladors disponibles
-flutter emulators --launch <emulator_id>
-flutter devices # Per veure tots els dispositius iniciats
-flutter run -d <device_id>
-```
-
-Exemple:
-
-```bash
-flutter emulators --launch Pixel_6_API_34
-flutter run -d emulator-5554
-```
-
-## 6) Comportament esperat de Git
-
-- Hauries de veure fitxers de codi/configuració dins de `web/` i `android/` versionats a Git.
-- No hauries de pujar sortides de compilació generades dins de `build/`.
-- No hauries de pujar fitxers locals d’IDE (`.idea/`, `.vscode/`, `*.iml`).
-
-Si cal, mantén aquestes regles a `.gitignore`:
-
-```gitignore
-build/
-.idea/
-.vscode/
-*.iml
-```
-
-Nota:
-
-- No ignoris tota la carpeta `web/` si web és una plataforma suportada.
-- No ignoris tota la carpeta `android/` si Android és una plataforma suportada.
-
-## 7) Checklist ràpid de verificació
-
-Després de regenerar, comprova:
-
-```bash
-flutter analyze
-flutter test
-flutter build web
-flutter build apk
-```
-
-Si totes les comandes passen, el teu flux de plantilla neta és correcte.
+* Flutter
+* Dart
+* REST APIs
+* JSON
+* Arquitectura MVC
